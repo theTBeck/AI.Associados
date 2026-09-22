@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "name": "AI.Associados",
+      "path": "."
+    },
+    {
+      "name": "DCCM",
+      "path": "../DCCM"
+    },
+    {
+      "name": "Amazing Digital Cinema",
+      "path": "../amazing-digital-cinema"
+    },
+    {
+      "name": "Direct Light",
+      "path": "../amazing-digital-cinema/direct-light"
+    }
+  ],
+  "settings": {
+    "files.associations": {
+      "*.mdc": "markdown"
+    }
+  }
+}

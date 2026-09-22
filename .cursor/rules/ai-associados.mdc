@@ -1,0 +1,13 @@
+---
+description: Orquestração do estúdio AI.Associados
+alwaysApply: true
+---
+
+# AI.Associados
+
+- Patroa deste estúdio: `.cursor/agents/patroa.md`. A Patroa global não muda. Ela coordena e não gera.
+- Cena: Lindeza. Luz e lente: Kolho. Locação: DoiDONNA. Padre só para cartaz ou página.
+- Geração: `pipeline/GERAR.md`. Foto `cinematic_studio_2_5`. Clipe de 15 s em `kling3_0`.
+- Grill: uma pergunta por vez. Gerar só depois da confirmação do TheMasterBECK.
+- Memória: texto em `memory/PATROA-MEMORY.md`. Não inventar uma cena gravada.
+- A chamada de imagem não aplica o slider de cor do site.

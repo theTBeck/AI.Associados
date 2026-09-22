@@ -1,0 +1,7 @@
+.env
+.env.*
+*.db
+.DS_Store
+workspace/input/
+workspace/output/
+workspace/processed/
