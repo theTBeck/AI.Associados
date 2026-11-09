@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O que a gente desenvolve com IA · 9 nov 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#170F0C; --text:#D8D7D9; --b1:#53301E; --b2:#564C4D; --b3:#8D6A5C; --b4:#A3877A; --g1:#657489; --g2:#AF9D9A; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,sans-serif; }
+button, a { font-family: inherit; color: inherit; }
+.serif { font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; }
+.topnav { position:fixed; z-index:30; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:flex-start; padding:1.3rem 3vw 0; pointer-events:none; }
+.topnav a { pointer-events:auto; text-decoration:none; }
+.word { font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; font-size:34px; line-height:1; color:var(--text); }
+.pairs { display:flex; gap:1.5rem; }
+.pairs div { display:flex; flex-direction:column; gap:.2rem; }
+.pairs a, .filters a { font-size:11px; letter-spacing:.16em; text-transform:uppercase; }
+.pairs a.on::before, .filters a.on::before { content:""; display:inline-block; width:4px; height:4px; margin-right:.35rem; border-radius:50%; background:#fff; transform:translateY(-1px); }
+.hero { position:relative; height:100vh; overflow:hidden; }
+.hero-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.42) saturate(.75); }
+.veil { position:absolute; inset:0; background:linear-gradient(180deg, rgba(23,15,12,.62), rgba(23,15,12,.2) 42%, rgba(23,15,12,.78)); }
+.when { position:absolute; z-index:2; top:5.4rem; left:3vw; margin:0; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--b4); }
+.still { position:absolute; z-index:2; object-fit:cover; }
+.still.top { top:13vh; left:50%; width:min(168px, 16vw); height:auto; transform:translateX(-50%); object-fit:contain; }
+.still.bot { bottom:16vh; left:50%; width:min(168px, 16vw); aspect-ratio:4/3; transform:translateX(-50%); }
+.hero-title { margin:0; }
+.hero-title span { position:absolute; z-index:2; top:43%; transform:translateY(-50%); font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; font-size:clamp(52px, 6.4vw, 108px); line-height:.9; max-width:24vw; }
+.hero-title span:first-child { left:4vw; }
+.hero-title span:last-child { right:4vw; text-align:right; }
+.ruler { position:absolute; z-index:2; top:20vh; bottom:24vh; margin:0; padding:0; list-style:none; display:flex; flex-direction:column; justify-content:space-between; font-size:9px; letter-spacing:.14em; color:var(--b3); }
+.ruler.left { left:calc(50% - min(250px, 18vw)); }
+.ruler.right { right:calc(50% - min(250px, 18vw)); text-align:right; }
+.frame { position:absolute; z-index:2; left:50%; top:45%; transform:translate(-50%, -52%); width:min(440px, 32vw); aspect-ratio:16/10; background:#000; }
+.frame video { width:100%; height:100%; object-fit:cover; display:block; }
+.corners i { position:absolute; width:16px; height:16px; border-color:var(--text); border-style:solid; }
+.corners i:nth-child(1) { top:8px; left:8px; border-width:1px 0 0 1px; }
+.corners i:nth-child(2) { top:8px; right:8px; border-width:1px 1px 0 0; }
+.corners i:nth-child(3) { bottom:8px; left:8px; border-width:0 0 1px 1px; }
+.corners i:nth-child(4) { bottom:8px; right:8px; border-width:0 1px 1px 0; }
+.play, #trilha { display:inline-flex; align-items:center; gap:.65rem; border:1px solid var(--text); border-radius:999px; background:rgba(23,15,12,.35); color:var(--text); font-size:11px; letter-spacing:.14em; text-transform:uppercase; padding:.32rem .85rem .32rem .32rem; cursor:pointer; }
+.play i, #trilha i { width:28px; height:28px; border:1px solid var(--text); border-radius:50%; display:grid; place-items:center; }
+.play i::before, #trilha i::before { content:""; border-top:4px solid transparent; border-bottom:4px solid transparent; border-left:6px solid var(--text); margin-left:2px; }
+.frame .play { position:absolute; left:50%; top:58%; transform:translate(-50%, -50%); }
+.hero-note { position:absolute; z-index:2; left:50%; top:calc(45% + min(150px, 11vw)); transform:translateX(-50%); width:min(420px, 36vw); margin:0; text-align:center; font-size:13px; line-height:1.45; color:var(--text); }
+.filters { position:absolute; z-index:2; left:3vw; bottom:4vh; display:flex; gap:1.5rem; }
+.filters a { display:flex; flex-direction:column; gap:.15rem; text-decoration:none; }
+.filters b { font-weight:400; color:var(--g2); letter-spacing:.08em; }
+#trilha { position:absolute; z-index:2; right:3vw; bottom:4vh; }
+.ig { min-height:50vh; display:flex; align-items:center; justify-content:center; padding:7vh 4vw; }
+.ig img { max-height:46vh; width:auto; max-width:92vw; display:block; }
+section { scroll-margin-top:4.5rem; }
+.read { width:min(720px, 86vw); margin:0 auto; padding:14vh 0 6vh; text-align:center; }
+.read h2, .desk h2, .front-head h2, #cardapio h2 { font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; letter-spacing:0; }
+.read h2 { font-size:clamp(48px, 6vw, 88px); margin:0 0 1rem; }
+.read p, .lede { font-size:16px; line-height:1.5; color:var(--text); }
+.front { padding:8vh 0 10vh; }
+.front-head, #cardapio .front-head { width:min(900px, 90vw); margin:0 auto; text-align:center; }
+.front-head p, .desk > p:first-child { margin:0; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--b4); }
+.front-head h2, #cardapio h2 { margin:.15rem 0 0; font-size:clamp(56px, 7vw, 108px); line-height:.9; }
+.lede { width:min(640px, 86vw); margin:1.1rem auto 0; text-align:center; }
+.vitrine { width:min(1180px, 92vw); margin:1.6rem auto 0; display:grid; grid-template-columns:.72fr 1.16fr .72fr; gap:22px; align-items:center; }
+.vitrine.phones, .vitrine.films { grid-template-columns:.72fr 1.05fr .72fr .72fr; align-items:end; }
+.hf-lead { width:min(860px, 72vw); margin:1.6rem auto 0; }
+.hf-lead .reel video { aspect-ratio:16/9; object-fit:contain; }
+.vitrine.three { width:min(980px, 90vw); margin:1.4rem auto 0; grid-template-columns:repeat(3, minmax(0, 1fr)); align-items:start; }
+.vitrine.three .reel.phone video { aspect-ratio:9/16; object-fit:contain; }
+.pair { width:min(1180px, 92vw); margin:1.4rem auto 0; display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+.reel { width:auto; margin:0; position:relative; }
+.reel video { width:100%; aspect-ratio:16/9; object-fit:cover; background:#000; display:block; }
+.reel.phone video { aspect-ratio:9/16; object-fit:cover; }
+.reel.center .play { position:absolute; right:1rem; bottom:28%; }
+.reel figcaption { display:flex; flex-direction:column; align-items:flex-start; gap:.2rem; margin-top:.55rem; }
+.reel span { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--g2); }
+.reel strong { font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; font-size:22px; }
+.reel a { font-size:11px; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; }
+.thumbs { width:min(1180px, 92vw); margin:22px auto 0; display:grid; grid-template-columns:repeat(6, 1fr); gap:16px 12px; }
+.thumb { position:relative; display:block; padding:0; border:0; background:transparent; cursor:pointer; overflow:visible; color:inherit; text-decoration:none; text-align:left; }
+.thumb img, .thumb video { width:100%; aspect-ratio:16/10; object-fit:cover; display:block; background:#000; }
+.thumb i { display:block; margin-top:.4rem; font-style:normal; font-size:11px; letter-spacing:.12em; text-transform:uppercase; }
+.mark { display:grid; place-items:center; min-height:120px; background:#000; border:1px solid var(--b1); }
+.desk { width:min(720px, 86vw); margin:0 auto; padding:14vh 0; }
+.desk h2 { font-size:clamp(48px, 6vw, 88px); margin:.2rem 0 .8rem; }
+.desk p { font-size:18px; line-height:1.5; max-width:38ch; }
+.desk a { text-decoration:none; letter-spacing:.12em; text-transform:uppercase; font-size:12px; }
+.strips { display:grid; grid-auto-flow:column; grid-template-rows:auto auto; grid-auto-columns:minmax(260px, 22vw); gap:18px 16px; overflow-x:auto; padding:2rem 4vw 1rem; }
+.strip { display:flex; flex-direction:column; text-decoration:none; color:inherit; background:#000; min-height:100%; }
+.strip img { width:100%; aspect-ratio:16/10; object-fit:cover; display:block; }
+.strip span { display:block; padding:.65rem .15rem 1rem; }
+.strip em { display:block; font-style:normal; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--g2); }
+.strip strong { display:block; margin-top:.25rem; font-weight:500; font-size:16px; }
+.strip.bare { min-height:168px; justify-content:flex-end; border:1px solid var(--b1); padding:.8rem; }
+#cardapio { padding:8vh 0 4vh; }
+#cardapio .lede { margin-bottom:2rem; }
+.film { position:fixed; inset:0; z-index:50; background:rgba(23,15,12,.94); display:none; flex-direction:column; justify-content:center; padding:4vh 4vw; }
+.film.on { display:flex; }
+.film .screen { width:min(1600px, 92vw, calc(70vh * 16 / 9)); margin:0 auto; aspect-ratio:16/9; background:#000; }
+.film .screen img, .film .screen video, .film .screen iframe { width:100%; height:100%; object-fit:contain; background:#000; border:0; }
+.bar { width:min(1600px, 92vw, calc(70vh * 16 / 9)); margin:.8rem auto 0; display:flex; justify-content:space-between; gap:1.5rem; align-items:end; }
+.bar h3 { margin:0; font-family:"Instrument Serif",serif; font-style:italic; font-weight:400; font-size:clamp(24px, 2vw, 36px); }
+.bar p { margin:.35rem 0 0; color:var(--g2); max-width:70ch; }
+.bar a, .x { color:var(--text); background:transparent; border:0; letter-spacing:.14em; text-transform:uppercase; font-size:11px; cursor:pointer; }
+@media (max-width: 980px) {
+  .hero { height:auto; min-height:100vh; }
+  .hero-title span, .frame, .still, .filters, #trilha, .when, .hero-note, .ruler { position:static; transform:none; max-width:none; width:auto; text-align:center; }
+  .frame { width:min(440px, 92vw); margin:1rem auto; }
+  .hero-title span { display:block; font-size:48px; }
+  .vitrine, .vitrine.phones, .pair, .thumbs { grid-template-columns:1fr 1fr; }
+  .vitrine.three { grid-template-columns:1fr; }
+  .pairs { gap:.7rem; }
+}
+</style>
+</head>
+<body>
+<header class="hero" id="capa">
+          <video id="hero-film" class="hero-bg" src="https://d3phaj0sisr2ct.cloudfront.net/site/content/videos/gen4/Footer.mp4" poster="midia/rw-footer.jpg" autoplay muted loop playsinline></video>
+          <div class="veil"></div>
+          <p class="when">Reunião · 9 nov 2026 · 10:00</p>
+          <img class="still top" src="midia/associados-logo.png" alt="Associados">
+          <h1 class="hero-title"><span>O que a gente</span> <span>desenvolve com IA</span></h1>
+          <ol class="ruler left" aria-hidden="true"><li>440</li><li>420</li><li>400</li><li>380</li><li>360</li><li>340</li><li>320</li><li>300</li><li>280</li><li>260</li></ol>
+          <div class="frame">
+            <video src="https://d3phaj0sisr2ct.cloudfront.net/site/content/videos/gen4/Footer.mp4" poster="midia/rw-footer.jpg" muted loop playsinline autoplay></video>
+            <span class="corners"><i></i><i></i><i></i><i></i></span>
+            <button class="play" type="button" data-kind="mp4" data-src="https://d3phaj0sisr2ct.cloudfront.net/site/content/videos/gen4/Footer.mp4" data-link="https://d3phaj0sisr2ct.cloudfront.net/site/content/videos/gen4/Footer.mp4" data-title="Clipe a partir do briefing" data-copy="Um briefing vira um clipe, com câmera e ação descritas."><i></i><span>Abrir o vídeo</span></button>
+          </div>
+          <ol class="ruler right" aria-hidden="true"><li>440</li><li>420</li><li>400</li><li>380</li><li>360</li><li>340</li><li>320</li><li>300</li><li>280</li><li>260</li></ol>
+          <p class="hero-note">Cada slide é um recurso, o serviço que a gente vende com ele, e um exemplo. Recurso é o que a ferramenta faz. Serviço é o que a gente vende em cima disso. Exemplo é a peça concreta, na tela.</p>
+          <img class="still bot" src="midia/rw-characters.jpg" alt="">
+          <nav class="filters">
+            <a href="#verticais">Novelas<b>4</b></a>
+            <a href="#blender">Blender<b>2</b></a>
+            <a href="#higgsfield">Higgsfield<b>16</b></a>
+            <a href="#runway">Runway<b>13</b></a>
+          </nav>
+          <button id="trilha" type="button" aria-pressed="false"><i></i><span>Ouvir trilha</span></button>
+        </header><nav class="topnav">
+          <a class="word" href="#capa">O que</a>
+          <div class="pairs">
+            <div><a href="#capa">Capa</a></div>
+            <div><a href="#cursor">Cursor</a><a href="#github">GitHub</a></div>
+            <div><a href="#verticais">Novelas</a><a href="#blender">Blender</a></div>
+            <div><a href="#higgsfield">Higgsfield</a><a href="#runway">Runway</a></div>
+            <div><a href="#cardapio">Cardápio</a></div>
+          </div>
+        </nav><section class="ig" id="associados">
+          <a href="https://www.instagram.com/associados.tv/" target="_blank" rel="noopener"><img src="midia/ig-associados-print.png" alt="Página do Instagram da Associados"></a>
+        </section><section class="read" id="leitura"><h2>Como ler</h2>
+          <p>Cada slide é um recurso, o serviço que a gente vende com ele, e um exemplo. Recurso é o que a ferramenta faz. Serviço é o que a gente vende em cima disso. Exemplo é a peça concreta, na tela.</p>
+        </section><section class="desk" id="cursor"><p>Cursor</p><h2>Mesa de trabalho</h2>
+          <p>Aqui a gente cria os agentes, as skills, o planejamento e a automação.</p>
+          <p><a href="https://cursor.com" target="_blank" rel="noopener">Abrir o Cursor</a></p>
+        </section><section class="desk" id="github"><p>GitHub</p><h2>Onde o trabalho fica</h2>
+          <p>O histórico e a entrega ficam no repositório.</p>
+          <p><a href="https://github.com/theTBeck" target="_blank" rel="noopener">Abrir o GitHub</a></p>
+        </section><section class="front" id="verticais"><header class="front-head"><p>Canais</p><h2>Novelas e sitcoms verticais</h2></header><p class="lede">A gente cria a novela vertical, a websérie e a sitcom vertical, o canal no YouTube e as contas no Instagram e no TikTok. Entra o canal de conteúdo e a peça de marca. O padrão é este: cartela do episódio, cena e, quando couber, a marca dentro da história. Exemplos públicos.</p><div class="vitrine phones"><figure class="reel phone" id="nv-kaye">
+      <video src="midia/nv-ref2.mp4" poster="midia/nv-ref2-a.jpg" controls playsinline preload="metadata"></video>
+      
+      <figcaption><strong>Kaye e Bob</strong><span>Sitcom, episódio 1</span><a href="https://www.instagram.com/reel/DcohPEpIXk7/" target="_blank" rel="noopener">Abrir o vídeo</a></figcaption>
+    </figure><figure class="reel phone center" id="nv-augusto">
+      <video src="midia/nv-ref1.mp4" poster="midia/nv-ref1-a.jpg" controls playsinline preload="metadata"></video>
+      <button class="play" type="button" data-kind="mp4" data-src="midia/nv-ref1.mp4" data-link="https://www.instagram.com/reel/DdpOwMoOV8D/" data-title="Augusto e Letícia" data-copy="Sitcom com marca, episódio 4" data-ratio="9/16"><i></i><span>Abrir o vídeo</span></button>
+      <figcaption><strong>Augusto e Letícia</strong><span>Sitcom com marca, episódio 4</span><a href="https://www.instagram.com/reel/DdpOwMoOV8D/" target="_blank" rel="noopener">Abrir o vídeo</a></figcaption>
+    </figure><figure class="reel phone" id="nv-groom">
+      <video src="midia/nv-groom.mp4" poster="midia/nv-groom-a.jpg" controls playsinline preload="metadata"></video>
+      
+      <figcaption><strong>The Runaway Groom</strong><span>Novela vertical</span><a href="https://www.instagram.com/reel/Dc1YpnGuzb1/" target="_blank" rel="noopener">Abrir o vídeo</a></figcaption>
+    </figure><figure class="reel phone" id="nv-ny">
+      <video src="midia/nv-ny.mp4" poster="midia/nv-ny-a.jpg" controls playsinline preload="metadata"></video>
+      
+      <figcaption><strong>Encontro em Nova York</strong><span>Novela vertical, anos 90</span><a href="https://www.instagram.com/reel/Dc1iXpNJsSk/" target="_blank" rel="noopener">Abrir o vídeo</a></figcaption>
+    </figure></div></section><section class="front" id="blender"><header class="front-head"><p>Blender</p><h2>Blockout e vista explodida</h2></header><div class="pair"><figure class="reel" id="b-blockout">
+      <video src="midia/yt-e65b4zNyfXY.mp4" poster="midia/yt-e65b4zNyfXY.jpg" controls playsinline preload="metadata"></video>
+      
+      <figcaption><strong>Blockout com carro em movimento</strong><span>Blockout de set</span><a href="https://www.youtube.com/watch?v=e65b4zNyfXY" target="_blank" rel="noopener">Abrir o vídeo</a></figcaption>
+    </figure><figure class="reel" id="b-camera">
+      <video src="midia/yt-kE698BYXtvk.mp4" poster="midia/yt-kE698BYXtvk.jpg" controls playsinline preload="metadata"></video>
+      
+      <figcaption><strong>Vista explodida de câmera</strong><span>Vista explodida técnica</span><a href="https://www.youtube.com/watch?v=kE698BYXtvk" target="_blank" rel="noopener">Abrir o vídeo</a></figcaption>
+    </figure></div></section><section class="front" id="higgsfield"><header class="front-head"><p>Higgsfield</p><h2>Recursos e serviços</h2></header><div class="hf-lead"><figure class="reel center" id="hf-blockout" data-kind="mp4" data-src="midia/yt-CZ_FW1QDAxo.mp4" data-link="https://www.youtube.com/watch?v=CZ_FW1QDAxo" data-title="Do blockout ao filme" data-copy="Filme com precisão de movimento" data-ratio="16/9">
+      <video src="midia/yt-CZ_FW1QDAxo.mp4" poster="midia/yt-CZ_FW1QDAxo.jpg" controls playsinline preload="metadata"></video>
+      <button class="play" type="button" data-kind="mp4" data-src="midia/yt-CZ_FW1QDAxo.mp4" data-link="https://www.youtube.com/watch?v=CZ_FW1QDAxo" data-title="Do blockout ao filme" data-copy="Filme com precisão de movimento" data-ratio="16/9"><i></i><span>Abrir o vídeo</span></button>
+      <figcaption><strong>Do blockout ao filme</strong><span>Filme com precisão de movimento</span><a href="https://www.youtube.com/watch?v=CZ_FW1QDAxo" target="_blank" rel="noopener">Abrir o vídeo</a></figcaption>
+    </figure></div><div class="vitrine three"><figure class="reel phone" id="hf-fruta" data-kind="mp4" data-src="midia/hf-pear.mp4" data-link="midia/hf-pear.mp4" data-title="Packshot de fruta" data-copy="Packshot" data-ratio="9/16">
+      <video src="midia/hf-pear.mp4" poster="midia/hf-pear-mid.jpg" controls playsinline preload="metadata"></video>
+      
+      <figcaption><strong>Packshot de fruta</strong><span>Packshot</span><a href="midia/hf-pear.mp4" target="_blank" rel="noopener">Abrir o vídeo</a></figcaption>
+    </figure><figure class="reel phone" id="hf-cha" data-kind="mp4" data-src="midia/h20-green-tea.mp4" data-link="midia/h20-green-tea.mp4" data-title="Macro de chá" data-copy="Filme curto de produto" data-ratio="9/16">
+      <video src="midia/h20-green-tea.mp4" poster="midia/h20-green-tea.jpg" controls playsinline preload="metadata"></video>
+      
+      <figcaption><strong>Macro de chá</strong><span>Filme curto de produto</span><a href="midia/h20-green-tea.mp4" target="_blank" rel="noopener">Abrir o vídeo</a></figcaption>
+    </figure><figure class="reel phone" id="hf-refri" data-kind="mp4" data-src="midia/hf-slow.mp4" data-link="midia/hf-slow.mp4" data-title="Refrigerante" data-copy="Packshot" data-ratio="9/16">
+      <video src="midia/hf-slow.mp4" poster="midia/hf-slow-mid.jpg" controls playsinline preload="metadata"></video>
+      
+      <figcaption><strong>Refrigerante</strong><span>Packshot</span><a href="midia/hf-slow.mp4" target="_blank" rel="noopener">Abrir o vídeo</a></figcaption>
+    </figure></div><div class="thumbs"><button class="thumb" id="hf-troca-no-plano" type="button" data-kind="mp4" data-src="midia/h05-car-switch.mp4" data-link="midia/h05-car-switch.mp4" data-title="Troca no plano" data-copy="Troca no plano"><img src="midia/h05-car-switch.jpg" alt=""><i>Troca no plano</i></button><button class="thumb" id="hf-blue-splash" type="button" data-kind="mp4" data-src="midia/hf-blue.mp4" data-link="midia/hf-blue.mp4" data-title="Blue Splash" data-copy="Blue Splash"><img src="midia/hf-blue-mid.jpg" alt=""><i>Blue Splash</i></button><button class="thumb" id="hf-fruta" type="button" data-kind="mp4" data-src="midia/hf-fruit.mp4" data-link="midia/hf-fruit.mp4" data-title="Fruta" data-copy="Fruta"><img src="midia/hf-fruit.jpg" alt=""><i>Fruta</i></button><button class="thumb" id="hf-coral" type="button" data-kind="mp4" data-src="midia/hf-coral.mp4" data-link="midia/hf-coral.mp4" data-title="Coral" data-copy="Coral"><img src="midia/hf-coral.jpg" alt=""><i>Coral</i></button><button class="thumb" id="hf-unboxing" type="button" data-kind="mp4" data-src="midia/h11-noir-unboxing.mp4" data-link="midia/h11-noir-unboxing.mp4" data-title="Unboxing" data-copy="Unboxing"><img src="midia/h11-noir-unboxing.jpg" alt=""><i>Unboxing</i></button><button class="thumb" id="hf-look-tricotado" type="button" data-kind="mp4" data-src="midia/h06-knitted.mp4" data-link="midia/h06-knitted.mp4" data-title="Look tricotado" data-copy="Look tricotado"><img src="midia/h06-knitted.jpg" alt=""><i>Look tricotado</i></button><button class="thumb" id="hf-echo-wave" type="button" data-kind="mp4" data-src="midia/h21-echo-wave.mp4" data-link="midia/h21-echo-wave.mp4" data-title="Echo Wave" data-copy="Echo Wave"><img src="midia/h21-echo-wave.jpg" alt=""><i>Echo Wave</i></button><button class="thumb" id="hf-pastel" type="button" data-kind="mp4" data-src="midia/h21-pastel.mp4" data-link="midia/h21-pastel.mp4" data-title="Pastel" data-copy="Pastel"><img src="midia/h21-pastel.jpg" alt=""><i>Pastel</i></button><button class="thumb" id="hf-recast-de-palco" type="button" data-kind="mp4" data-src="midia/h01-stage-recast.mp4" data-link="midia/h01-stage-recast.mp4" data-title="Recast de palco" data-copy="Recast de palco"><img src="midia/h01-stage-recast.jpg" alt=""><i>Recast de palco</i></button><button class="thumb" id="hf-recast-de-elenco" type="button" data-kind="mp4" data-src="midia/h02-elevator-duet.mp4" data-link="midia/h02-elevator-duet.mp4" data-title="Recast de elenco" data-copy="Recast de elenco"><img src="midia/h02-elevator-duet.jpg" alt=""><i>Recast de elenco</i></button><button class="thumb" id="hf-orbita-urbana" type="button" data-kind="mp4" data-src="midia/h04-urban-orbit.mp4" data-link="midia/h04-urban-orbit.mp4" data-title="Órbita urbana" data-copy="Órbita urbana"><img src="midia/h04-urban-orbit.jpg" alt=""><i>Órbita urbana</i></button><button class="thumb" id="hf-açao" type="button" data-kind="mp4" data-src="midia/h03-football.mp4" data-link="midia/h03-football.mp4" data-title="Ação" data-copy="Ação"><img src="midia/h03-football.jpg" alt=""><i>Ação</i></button></div></section><section class="front" id="runway"><header class="front-head"><p>Runway</p><h2>Gerar, editar, acabar</h2></header><div class="vitrine"><button class="thumb" id="R14" type="button" data-kind="mp4" data-src="midia/rw-workflows.mp4" data-link="midia/rw-workflows.mp4" data-title="Linha de produção" data-copy="Um pipeline de geração fica gravado e pode ser rodado de novo com outro insumo."><img src="midia/rw-workflows.jpg" alt=""><i>Linha de produção</i></button><figure class="reel center" id="R01">
+      <video src="https://d3phaj0sisr2ct.cloudfront.net/site/content/videos/gen4/Footer.mp4" poster="midia/rw-footer.jpg" controls playsinline preload="metadata"></video>
+      <button class="play" type="button" data-kind="mp4" data-src="https://d3phaj0sisr2ct.cloudfront.net/site/content/videos/gen4/Footer.mp4" data-link="https://d3phaj0sisr2ct.cloudfront.net/site/content/videos/gen4/Footer.mp4" data-title="Clipe a partir do briefing" data-copy="Um briefing vira um clipe, com câmera e ação descritas." data-ratio="16/9"><i></i><span>Abrir o vídeo</span></button>
+      <figcaption><strong>Clipe a partir do briefing</strong><span>Um briefing vira um clipe, com câmera e ação descritas.</span><a href="https://d3phaj0sisr2ct.cloudfront.net/site/content/videos/gen4/Footer.mp4" target="_blank" rel="noopener">Abrir o vídeo</a></figcaption>
+    </figure><button class="thumb" id="R02" type="button" data-kind="mp4" data-src="https://d3phaj0sisr2ct.cloudfront.net/site/images/characters-homepage-1.mp4" data-link="https://d3phaj0sisr2ct.cloudfront.net/site/images/characters-homepage-1.mp4" data-title="Still animado" data-copy="Uma foto parada ganha movimento de câmera e de assunto."><img src="midia/rw-characters.jpg" alt=""><i>Still animado</i></button></div><div class="thumbs"><button class="thumb" id="R03" type="button" data-kind="mp4" data-src="https://d3phaj0sisr2ct.cloudfront.net/site/videos/product/transform-video/Change+Appartment.mp4" data-link="https://d3phaj0sisr2ct.cloudfront.net/site/videos/product/transform-video/Change+Appartment.mp4" data-title="Restilo de footage" data-copy="Um vídeo existente muda de fundo, luz, clima ou tratamento, e a ação continua."><img src="midia/rw-apartment.jpg" alt=""><i>Restilo de footage</i></button><button class="thumb" id="R04" type="button" data-kind="mp4" data-src="https://d3phaj0sisr2ct.cloudfront.net/site/images/enterprise/ENT_Aleph/Remove+Smoke.mp4" data-link="https://d3phaj0sisr2ct.cloudfront.net/site/images/enterprise/ENT_Aleph/Remove+Smoke.mp4" data-title="Correção de plano" data-copy="Muda um elemento do plano, e o resto do take permanece."><img src="midia/rw-smoke.jpg" alt=""><i>Correção de plano</i></button><button class="thumb" id="R05" type="button" data-kind="mp4" data-src="https://d3phaj0sisr2ct.cloudfront.net/site/images/homepage/products/multishot-product.mp4" data-link="https://d3phaj0sisr2ct.cloudfront.net/site/images/homepage/products/multishot-product.mp4" data-title="Anúncio de produto" data-copy="A foto real do produto vira um anúncio de produto. A ajuda oficial também monta storyboard a partir de fotos de produto."><img src="midia/rw-multishot.jpg" alt=""><i>Anúncio de produto</i></button><button class="thumb" id="R06" type="button" data-kind="mp4" data-src="https://d3phaj0sisr2ct.cloudfront.net/site/images/enterprise/Enterprise_Animatics/Enterprise_Animatic-2.mp4" data-link="https://d3phaj0sisr2ct.cloudfront.net/site/images/enterprise/Enterprise_Animatics/Enterprise_Animatic-2.mp4" data-title="Comercial em planos" data-copy="Um briefing vira até cinco planos ligados, como uma peça só."><img src="midia/rw-animatic.jpg" alt=""><i>Comercial em planos</i></button><button class="thumb" id="R07" type="button" data-kind="mp4" data-src="https://d3phaj0sisr2ct.cloudfront.net/site/images/enterprise/ENT_Moodboards/moodboard+(1).mp4" data-link="https://d3phaj0sisr2ct.cloudfront.net/site/images/enterprise/ENT_Moodboards/moodboard+(1).mp4" data-title="Direção de still" data-copy="Still, prancha de cenas e imagem estendida para outra proporção, sem cortar o assunto."><img src="midia/rw-mood.jpg" alt=""><i>Direção de still</i></button><button class="thumb" id="R08" type="button" data-kind="mp4" data-src="https://d3phaj0sisr2ct.cloudfront.net/site/images/enterprise/ENT_Aleph/Greenscreen.mp4" data-link="https://d3phaj0sisr2ct.cloudfront.net/site/images/enterprise/ENT_Aleph/Greenscreen.mp4" data-title="Recorte" data-copy="O assunto sai do fundo. Em imagem, pelo recorte. Em vídeo, pela troca ou remoção do fundo."><img src="midia/rw-green.jpg" alt=""><i>Recorte</i></button><button class="thumb" id="R09" type="button" data-kind="mp4" data-src="midia/rw-upscale.mp4" data-link="midia/rw-upscale.mp4" data-title="Ampliação" data-copy="Imagem ou vídeo sobe de resolução. O resto do arquivo permanece."><img src="midia/rw-upscale.jpg" alt=""><i>Ampliação</i></button><button class="thumb" id="R10" type="button" data-kind="mp4" data-src="midia/rw-ruby.mp4" data-link="midia/rw-ruby.mp4" data-title="Acabamento de master" data-copy="HDR, mais quadros por segundo e expansão do quadro. Cada um mexe numa coisa só."><img src="midia/rw-ruby-frame.jpg" alt=""><i>Acabamento de master</i></button><button class="thumb" id="R12" type="button" data-kind="mp4" data-src="midia/rw-dialogue.mp4" data-link="midia/rw-dialogue.mp4" data-title="Banda sonora e fala" data-copy="Música, efeito sonoro e fala gerados para o filme."><img src="midia/rw-dialogue.jpg" alt=""><i>Banda sonora e fala</i></button><button class="thumb" id="R13" type="button" data-kind="mp4" data-src="midia/rw-loc.mp4" data-link="https://help.runwayml.com/hc/en-us/articles/52807980690323-Creating-with-Ad-Localization" data-title="Anúncio localizado" data-copy="O texto visível de um anúncio estático passa para outra língua, e o layout permanece."><img src="midia/rw-loc.jpg" alt=""><i>Anúncio localizado</i></button></div></section><section class="dock" id="cardapio"><header class="front-head"><p>Cardápio</p><h2>O que dá para oferecer hoje</h2></header><p class="lede">Reunião de 9 nov 2026, 10:00. Cada item deste cardápio tem um exemplo.</p><div class="strips"><a class="strip" href="#nv-augusto"><img src="midia/nv-ref1-a.jpg" alt=""><span><em>Canais</em><strong>Augusto e Letícia</strong></span></a><a class="strip" href="#nv-kaye"><img src="midia/nv-ref2-a.jpg" alt=""><span><em>Canais</em><strong>Kaye e Bob</strong></span></a><a class="strip" href="#nv-groom"><img src="midia/nv-groom-a.jpg" alt=""><span><em>Canais</em><strong>The Runaway Groom</strong></span></a><a class="strip" href="#nv-ny"><img src="midia/nv-ny-a.jpg" alt=""><span><em>Canais</em><strong>Encontro em Nova York</strong></span></a><a class="strip" href="#b-blockout"><img src="midia/yt-e65b4zNyfXY.jpg" alt=""><span><em>Blender</em><strong>Blockout de set</strong></span></a><a class="strip" href="#b-camera"><img src="midia/yt-kE698BYXtvk.jpg" alt=""><span><em>Blender</em><strong>Vista explodida técnica</strong></span></a><a class="strip" href="pecas/b03_colapso.png" target="_blank" rel="noopener"><img src="pecas/b03_colapso.png" alt=""><span><em>Blender</em><strong>Plano de colapso</strong></span></a><a class="strip" href="pecas/b04_cartoon.png" target="_blank" rel="noopener"><img src="pecas/b04_cartoon.png" alt=""><span><em>Blender</em><strong>Look estilizado 3D</strong></span></a><a class="strip" href="pecas/b05_inicio.png" target="_blank" rel="noopener"><img src="pecas/b05_inicio.png" alt=""><span><em>Blender</em><strong>Cena 3D de produção</strong></span></a><a class="strip" href="#hf-blockout"><img src="midia/yt-CZ_FW1QDAxo.jpg" alt=""><span><em>Higgsfield</em><strong>Filme com precisão de movimento</strong></span></a><a class="strip" href="#hf-fruta"><img src="midia/hf-fruit.jpg" alt=""><span><em>Higgsfield</em><strong>Packshot de fruta</strong></span></a><a class="strip" href="#hf-cha"><img src="midia/h20-green-tea.jpg" alt=""><span><em>Higgsfield</em><strong>Macro de chá</strong></span></a><a class="strip" href="#hf-refri"><img src="midia/hf-slow-mid.jpg" alt=""><span><em>Higgsfield</em><strong>Refrigerante</strong></span></a><a class="strip" href="#hf-troca-no-plano"><img src="midia/h05-car-switch.jpg" alt=""><span><em>Higgsfield</em><strong>Troca no plano</strong></span></a><a class="strip" href="#hf-blue-splash"><img src="midia/hf-blue-mid.jpg" alt=""><span><em>Higgsfield</em><strong>Blue Splash</strong></span></a><a class="strip" href="#hf-fruta"><img src="midia/hf-fruit.jpg" alt=""><span><em>Higgsfield</em><strong>Fruta</strong></span></a><a class="strip" href="#hf-coral"><img src="midia/hf-coral.jpg" alt=""><span><em>Higgsfield</em><strong>Coral</strong></span></a><a class="strip" href="#hf-unboxing"><img src="midia/h11-noir-unboxing.jpg" alt=""><span><em>Higgsfield</em><strong>Unboxing</strong></span></a><a class="strip" href="#hf-look-tricotado"><img src="midia/h06-knitted.jpg" alt=""><span><em>Higgsfield</em><strong>Look tricotado</strong></span></a><a class="strip" href="#hf-echo-wave"><img src="midia/h21-echo-wave.jpg" alt=""><span><em>Higgsfield</em><strong>Echo Wave</strong></span></a><a class="strip" href="#hf-pastel"><img src="midia/h21-pastel.jpg" alt=""><span><em>Higgsfield</em><strong>Pastel</strong></span></a><a class="strip" href="#hf-recast-de-palco"><img src="midia/h01-stage-recast.jpg" alt=""><span><em>Higgsfield</em><strong>Recast de palco</strong></span></a><a class="strip" href="#hf-recast-de-elenco"><img src="midia/h02-elevator-duet.jpg" alt=""><span><em>Higgsfield</em><strong>Recast de elenco</strong></span></a><a class="strip" href="#hf-orbita-urbana"><img src="midia/h04-urban-orbit.jpg" alt=""><span><em>Higgsfield</em><strong>Órbita urbana</strong></span></a><a class="strip" href="#hf-açao"><img src="midia/h03-football.jpg" alt=""><span><em>Higgsfield</em><strong>Ação</strong></span></a><a class="strip" href="#R01"><img src="midia/rw-footer.jpg" alt=""><span><em>Runway</em><strong>Clipe a partir do briefing</strong></span></a><a class="strip" href="#R02"><img src="midia/rw-characters.jpg" alt=""><span><em>Runway</em><strong>Still animado</strong></span></a><a class="strip" href="#R03"><img src="midia/rw-apartment.jpg" alt=""><span><em>Runway</em><strong>Restilo de footage</strong></span></a><a class="strip" href="#R04"><img src="midia/rw-smoke.jpg" alt=""><span><em>Runway</em><strong>Correção de plano</strong></span></a><a class="strip" href="#R05"><img src="midia/rw-multishot.jpg" alt=""><span><em>Runway</em><strong>Anúncio de produto</strong></span></a><a class="strip" href="#R06"><img src="midia/rw-animatic.jpg" alt=""><span><em>Runway</em><strong>Comercial em planos</strong></span></a><a class="strip" href="#R07"><img src="midia/rw-mood.jpg" alt=""><span><em>Runway</em><strong>Direção de still</strong></span></a><a class="strip" href="#R08"><img src="midia/rw-green.jpg" alt=""><span><em>Runway</em><strong>Recorte</strong></span></a><a class="strip" href="#R09"><img src="midia/rw-upscale.jpg" alt=""><span><em>Runway</em><strong>Ampliação</strong></span></a><a class="strip" href="#R10"><img src="midia/rw-ruby-frame.jpg" alt=""><span><em>Runway</em><strong>Acabamento de master</strong></span></a><a class="strip bare" href="#R11"><span><em>Runway</em><strong>Corte emendado</strong></span></a><a class="strip" href="#R12"><img src="midia/rw-dialogue.jpg" alt=""><span><em>Runway</em><strong>Banda sonora e fala</strong></span></a><a class="strip" href="#R13"><img src="midia/rw-loc.jpg" alt=""><span><em>Runway</em><strong>Anúncio localizado</strong></span></a><a class="strip" href="#R14"><img src="midia/rw-workflows.jpg" alt=""><span><em>Runway</em><strong>Linha de produção</strong></span></a><a class="strip bare" href="#R15"><span><em>Runway</em><strong>Peça com a marca aplicada</strong></span></a></div><p class="lede">Reunião de 9 nov 2026, 10:00. Cada item deste cardápio tem um exemplo.</p></section>
+<div class="film" id="film"><div class="screen" id="screen"></div>
+  <div class="bar"><div><h3 id="film-title"></h3><p id="film-copy"></p><a id="film-link" href="" target="_blank" rel="noopener">Abrir o vídeo</a></div>
+  <button class="x" id="close" type="button">Fechar</button></div>
+</div>
+<script>
+const film = document.getElementById("film");
+const screen = document.getElementById("screen");
+const title = document.getElementById("film-title");
+const copy = document.getElementById("film-copy");
+const openLink = document.getElementById("film-link");
+const hero = document.getElementById("hero-film");
+const sound = document.getElementById("trilha");
+
+if (sound && hero) sound.onclick = () => {
+  hero.muted = !hero.muted;
+  const label = sound.querySelector("span");
+  const text = hero.muted ? "Ouvir trilha" : "Silenciar trilha";
+  if (label) label.textContent = text;
+  else sound.textContent = text;
+  sound.setAttribute("aria-pressed", String(!hero.muted));
+  if (!hero.muted) hero.play();
+};
+
+function hoverOn(stage, item) {
+  if (stage.querySelector("video, iframe")) return;
+  const kind = item.dataset.kind;
+  let node;
+  if (kind === "mp4") {
+    node = document.createElement("video");
+    node.src = item.dataset.src;
+    node.muted = true; node.loop = true; node.playsInline = true; node.autoplay = true;
+  } else if (kind === "yt") {
+    node = document.createElement("iframe");
+    const id = item.dataset.id;
+    node.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${id}&rel=0`;
+    node.allow = "autoplay; encrypted-media";
+    node.title = item.dataset.title;
+  } else return;
+  const img = stage.querySelector("img");
+  if (img) img.style.display = "none";
+  stage.prepend(node);
+  if (node.play) node.play().catch(() => {});
+}
+function hoverOff(stage) {
+  stage.querySelectorAll("video, iframe").forEach(n => n.remove());
+  const img = stage.querySelector("img");
+  if (img) img.style.display = "";
+}
+document.body.addEventListener("mouseover", (ev) => {
+  const reelVideo = ev.target.closest(".reel")?.querySelector("video");
+  if (reelVideo && !film.classList.contains("on")) {
+    if (reelVideo.dataset.keepSound !== "1") reelVideo.muted = true;
+    reelVideo.play().catch(() => {});
+  }
+  const item = ev.target.closest("[data-kind]");
+  if (!item || film.classList.contains("on")) return;
+  const stage = item.classList.contains("thumb") ? item : item.querySelector(".stage");
+  if (!stage || stage.contains(ev.relatedTarget)) return;
+  hoverOn(stage, item);
+});
+document.body.addEventListener("mouseout", (ev) => {
+  const item = ev.target.closest("[data-kind]");
+  if (!item) return;
+  const stage = item.classList.contains("thumb") ? item : item.querySelector(".stage");
+  if (!stage || stage.contains(ev.relatedTarget)) return;
+  hoverOff(stage);
+});
+function show(item) {
+  const vertical = item.dataset.ratio === "9/16";
+  screen.style.aspectRatio = vertical ? "9 / 16" : "16 / 9";
+  screen.style.width = vertical
+    ? "min(430px, 88vw, calc(82vh * 9 / 16))"
+    : "min(1600px, 92vw, calc(70vh * 16 / 9))";
+  const src = item.dataset.src || "";
+  screen.innerHTML = src
+    ? `<video src="${src}" controls autoplay muted playsinline></video>`
+    : `<img src="${item.dataset.poster || ""}" alt="">`;
+  title.textContent = item.dataset.title || "";
+  copy.textContent = item.dataset.copy || "";
+  if (item.dataset.link) { openLink.href = item.dataset.link; openLink.hidden = false; }
+  else openLink.hidden = true;
+  film.classList.add("on");
+}
+document.body.addEventListener("click", (ev) => {
+  const item = ev.target.closest("[data-kind]");
+  if (!item || ev.target.closest("a, #trilha")) return;
+  show(item);
+});
+document.getElementById("close").onclick = () => { film.classList.remove("on"); screen.innerHTML = ""; };
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") document.getElementById("close").click(); });
+const leave = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => { if (!entry.isIntersecting) entry.target.pause(); });
+}, { threshold: 0.2 });
+function arm(video) {
+  if (video.dataset.armed) return;
+  video.dataset.armed = "1";
+  if (video.dataset.keepSound !== "1") video.muted = true;
+  video.addEventListener("volumechange", () => { video.dataset.keepSound = video.muted ? "" : "1"; });
+  leave.observe(video);
+}
+document.querySelectorAll("video").forEach(arm);
+new MutationObserver(() => document.querySelectorAll("video").forEach(arm)).observe(document.body, { childList: true, subtree: true });
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    const id = "#" + entry.target.id;
+    document.querySelectorAll(".pairs a, .filters a").forEach((a) => a.classList.toggle("on", a.getAttribute("href") === id));
+  });
+}, { threshold: 0.35 });
+["capa", "cursor", "github", "verticais", "blender", "higgsfield", "runway", "cardapio"].forEach((id) => {
+  const node = document.getElementById(id);
+  if (node) spy.observe(node);
+});
+</script>
+</body></html>
